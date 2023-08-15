@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html style="font-size: {$_COOKIE['fontsize']|default='52px'};">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=no">
+    <meta name="Keywords" content="{$web['meta_keywords']}" />
+    <meta name="Description" content="{$web['meta_description']}" />
+    <link rel="stylesheet" href="{$home_tplpath}css/style.css">
+    <title>{$web['meta_title']}</title>
+</head>
+<body>
+    <div id="app">
+       <div class="x-home">
+            <div class="x-city__header">
+                <img src="{$web['logo']}" alt="" class="x-city__logo">           
+                <div class="x-city__search" url="{:url('search/index')}">
+                    <input type="text" placeholder="请输入搜索关键字" class="x-city__search--input">           
+                    <img src="{$home_tplpath}images/search.png" alt="">
+                </div>
+                {notempty name="user"}
+                <a class="user" style="background-image: url({$user['headimgurl']});" href="{:url('user/index/index')}">{$user['username']}</a>
+                {else/}
+                <a class="account" href="{:url('user/user/login')}">帐户</a>
+                {/notempty}
+            </div>
+            <ul class="menu f-cb van-hairline--bottom">
+                {nav id="vo"}
+                <li>
+                    <a href="{$vo['url']}" {eq name="vo['current']" value="1"}class="crt"{/eq}>{$vo['title']}</a>
+                </li>
+                {/nav}
+            </ul>
+            <div class="x-page__content">
+                <div class="x-book__library">
+                    <div class="x-library__books">
+                        <div class="van-list">
+                            <span>
+                                {news id="news" limit="20" order="update_time desc" page="1" empty="<div class='van-list'><div class='x-empty'><img src='/template/home/default_wap/images/empty.png'></div></div>"}
+                                <div class="x-book">
+                                    <div class="x-news__multi">
+                                        <div class="x-news__coverbox">
+                                            <a href="{$news['url']}">
+                                                <img class="x-book__cover" src="{$news['pic']}">
+                                            </a>
+                                        </div>
+                                        <div class="x-book__text--multi" style="width: calc(100% - 1.8rem); height: 1.4rem;">
+                                            <a href="{$news['url']}">
+                                                <div class="x-book__nocover">
+                                                    <p class="x-news__info--name">{$news['title']}</p>
+                                                    <p class="x-news__intro">{$news['content']|raw|strip_tags}</p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/news}
+                            </span>
+                        </div>
+                        <div class="pages_bottom" style="display: block;">
+                            {news_page /}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="{$home_tplpath}js/jquery.min.js"></script>
+<script type="text/javascript" src="{$home_tplpath}js/global.js"></script>
+</body>
+</html>

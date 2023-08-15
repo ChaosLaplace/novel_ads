@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html style="font-size: {$_COOKIE['fontsize']|default='52px'};">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=no">
+    <meta name="Keywords" content="{$list_keywords}" />
+    <meta name="Description" content="{$list_description}" />
+    <link rel="stylesheet" href="{$home_tplpath}css/style.css">
+    <title>{$list_title}</title>
+</head>
+<body>
+    <div id="app">
+       <div class="x-home">
+           <div class="x-city__header">
+                <img src="{$web['logo']}" alt="" class="x-city__logo">
+                <div class="x-city__search" url="{:url('home/search/index')}">
+                    <input type="text" placeholder="请输入搜索关键字" class="x-city__search--input" disabled>
+                    <img src="{$home_tplpath}images/search.png" alt="">
+                </div>
+                {notempty name="user"}
+                <a class="user" style="background-image: url({$user['headimgurl']});" href="{:url('user/index/index')}">{$user['username']}</a>
+                {else/}
+                <a class="account" href="{:url('user/user/login')}">帐户</a>
+                {/notempty}
+            </div>
+            <ul class="menu f-cb van-hairline--bottom">
+                {nav id="vo"}
+                <li>
+                    <a href="{$vo['url']}" {eq name="vo['current']" value="1"}class="crt"{/eq}>{$vo['title']}</a>
+                </li>
+                {/nav}
+            </ul>
+            <section class="x-city__part hr-top">
+                <div class="x-part__title">重磅推荐</div>
+                <div class="x-part__books">
+                    <div class="x-part__books--cover">
+                        {novel id="novel" cid="$cid" limit="3"}
+                        <div class="x-book">
+                            <a href="{$novel['url']}">
+                                <div class="x-book__coverbox">
+                                    <img class="x-book__cover" src="{$novel['pic']}">
+                                </div>
+                                <div class="x-book__text--normal">{$novel['title']}</div>
+                            </a>
+                        </div>
+                        {/novel}
+                    </div>
+                </div>
+            </section>
+            <section class="x-city__part hr-top">
+                <div class="x-part__title">大家都在看</div>
+                <div class="x-part__books">
+                    <div class="x-part__books--cover">
+                        {novel id="novel" limit="6" cid="$cid" order="hits desc"}
+                        <div class="m-book-single f-cb">
+                            <a href="{$novel['url']}" title="{$novel['title']}">
+                                <img src="{$novel['pic']}" alt="{$novel['title']}">
+                                <h3>{$novel['title']}</h3>
+                                <p>{$novel['author']}</p>
+                                <p>{$novel['content']|raw|strip_tags|mb_substr=0,300}</p>
+                                <p class="tag">
+                                    <span>{$novel['serialize_text']}</span>
+                                    <span>{$novel['word_million']}万字</span>
+                                </p>
+                            </a>
+                        </div>
+                        {/novel}
+                    </div>
+                </div>
+            </section>
+            <section class="x-city__part hr-top">
+                <div class="x-part__title">最近更新</div>
+                <div class="x-part__books">
+                    <div class="x-city__swiper--item">
+                        {novel id="novel" cid="$cid" limit="10" order="update_time desc"}
+                        <div class="x-book">
+                            <div class="x-book__nocover">
+                                <div class="x-book__text--multi">
+                                    <p class="x-book__name">
+                                    <span class="x-book__titleName"><a href="{$novel['url']}">{$novel['title']}</a></span>
+                                        <span class="x-book__tag">{$novel['ctitle']}</span>
+                                        <span class="x-book__tag">{$novel['author']}</span>
+                                    </p>
+                                    <p class="x-book__intro"><a href="{$novel['chapter_url']}">{$novel['chapter_title']}</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        {/novel}
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="ui-line"></div>
+        <footer class="index">
+            <div class="m-right">
+                <!--版权-->
+                <p class="footer-announce">
+                    本站收錄的所有小說均由自動化設備采集於互聯網，版權為原創作者所有，在本站展示僅為方便網友閱讀。<br>
+
+                    本站所收錄作品、社區話題、書庫評論及本站所做之廣告均屬其個人行為，與本站立場無關。<br>
+
+                    Copyright © 2023 {$web['url']} Rights Reserved.   {$web['meta_title']} 版权所有。<br>
+
+                    聯係郵箱 ： #gmail.com (# 換成 @)
+                </p>
+
+                <br>
+                <div style="color: Red;">如無意中侵犯到您權益，請與我們聯係，我們將在第一時間回應並處理！謝謝！</div>
+                <!--版权-->
+            </div>
+        </footer>
+    </div>
+<script type="text/javascript" src="{$home_tplpath}js/jquery.min.js"></script>
+<script type="text/javascript" src="{$home_tplpath}js/global.js"></script>
+</body>
+</html>

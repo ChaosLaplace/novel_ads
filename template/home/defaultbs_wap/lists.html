@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html style="font-size: {$_COOKIE['fontsize']|default='52px'};">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=no">
+    <meta name="Keywords" content="{$list_keywords}" />
+    <meta name="Description" content="{$list_description}" />
+    <link rel="stylesheet" href="{$home_tplpath}css/style.css">
+    <title>{$list_title}</title>
+</head>
+<body>
+    <div id="app">
+       <div class="x-home">
+            <div class="x-page__header van-hairline--bottom">
+                <a href="javascript:history.back();"></a>
+                <span class="x-page__title">书库</span>
+                <div class="header-menu" onclick="javascript:location.href='/';">
+                    <i class="icon-shouye-h is-active" style="font-size: 0.4rem;"></i>
+                </div>
+            </div>
+            <div class="x-page__content">
+                <div class="x-book__library">
+                    <div class="x-library__category">
+                        <div class="x-category__box">
+                            <div class="x-category__box--title">频道</div>
+                            <div class="x-category__box--list">
+                                {filter id="type" name="type" type="0"}
+                                <span class="x-category__item {eq name="type['current']" value="1"}is-active{/eq}"><a href="{$type['url']}">{$type['title']}</a></span>
+                                {/filter}
+                            </div>
+                        </div>
+                        {notempty name="cid"}
+                        <div class="x-category__box">
+                            <div class="x-category__box--title">分类</div>
+                            <div class="x-category__box--list">
+                                {filter id="type" name="type" cid="$cid"}
+                                    <span class="x-category__item {eq name="type['current']" value="1"}is-active{/eq}"><a href="{$type['url']}">{$type['title']}</a></span>
+                                {/filter}
+                            </div>
+                        </div>
+                        {/notempty}
+                        <div class="x-category__box">
+                            <div class="x-category__box--title">状态</div>
+                            <div class="x-category__box--list">
+                                {filter id="serialize" name="serialize"}
+                                    <span class="x-category__item {eq name="serialize['current']" value="1"}is-active{/eq}"><a href="{$serialize['url']}">{$serialize['title']}</a></span>
+                                {/filter}
+                            </div>
+                        </div>
+                        <div class="x-category__box" style="display:none;">
+                            <div class="x-category__box--title">排序</div>
+                            <div class="x-category__box--list">
+                                <span class="x-category__item {if $Request.param.order=='hits+desc' or $Request.param.order==''}is-active{/if}"><a href="{:url('home/lists/lists',['id'=>$Request.param.id,'size'=>$Request.param.size,'serialize'=>$Request.param.serialize,'update'=>$Request.param.update,'order'=>'hits desc'])}">总人气</a></span>
+                               <span class="x-category__item {eq name='Request.param.order' value='hits_day+desc'}is-active{/eq}"><a href="{:url('home/lists/lists',['id'=>$Request.param.id,'size'=>$Request.param.size,'serialize'=>$Request.param.serialize,'update'=>$Request.param.update,'order'=>'hits_day desc'])}">日人气</a></span>
+                                <span class="x-category__item {eq name='Request.param.order' value='hits_week+desc'}is-active{/eq}"><a href="{:url('home/lists/lists',['id'=>$Request.param.id,'size'=>$Request.param.size,'serialize'=>$Request.param.serialize,'update'=>$Request.param.update,'order'=>'hits_week desc'])}">周人气</a></span>
+                                <span class="x-category__item {eq name='Request.param.order' value='hits_month+desc'}is-active{/eq}"><a href="{:url('home/lists/lists',['id'=>$Request.param.id,'size'=>$Request.param.size,'serialize'=>$Request.param.serialize,'update'=>$Request.param.update,'order'=>'hits_month desc'])}">月人气</a></span>
+
+                            </div>
+                        </div>
+                        <div class="x-category__box" style="display:none;">
+                            <div class="x-category__box--title">字数</div>
+                            <div class="x-category__box--list">
+                                {filter id="size" name="size"}
+                                <span class="x-category__item {eq name="size['current']" value="1"}is-active{/eq}"><a href="{$size['url']}">{$size['title']}</a></span>
+                                {/filter}
+                            </div>
+                        </div>
+                        <div class="x-category__box" style="display:none;">
+                            <div class="x-category__box--title">更新</div>
+                            <div class="x-category__box--list">
+                                {filter id="update" name="update"}
+                                    <span class="x-category__item {eq name="update['current']" value="1"}is-active{/eq}"><a href="{$update['url']}">{$update['title']}</a></span>
+                                {/filter}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="x-library__category--more">展开更多筛选项</div>
+                    <div class="x-library__books">
+                        <div class="van-list">
+                            <span>
+                                {novel id="novel" limit="20" order="id desc" page="1"}
+                                <div class="x-book">
+                                    <div class="x-book__multi">
+                                        
+                                        <div class="x-book__coverbox">
+                                            <a href="{$novel['url']}">
+                                                <img class="x-book__cover" src="{$novel['pic']}" style="width: 1.6rem; height: 2.13333rem;">
+                                            </a>
+                                        </div>
+                                        <div class="x-book__text--multi" style="width: calc(100% - 1.6rem); height: 2.13333rem;">
+                                            <a href="{$novel['url']}">
+                                                <div class="x-book__info">
+                                                    <p class="x-book__info--name">{$novel['title']}</p>
+                                                    <p class="x-book__info--chapter">{$novel['content']|raw|strip_tags|mb_substr=0,300}</p>
+                                                    <p class="x-book__info--update">更新时间：{$novel['time']|time_format="m-d H:i"}</p>
+                                                    <p class="x-book__info--author">
+                                                        {$novel['author']}
+                                                        <span>{$novel['word_million']}万字</span>
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/novel}
+                            </span>
+                        </div>
+                        <div class="pages_bottom" style="display: block;">
+                            {novel_page /}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui-line"></div>
+        <footer class="index">
+            <div class="m-right">
+                <!--版权-->
+                <p class="footer-announce">
+                    本站收錄的所有小說均由自動化設備采集於互聯網，版權為原創作者所有，在本站展示僅為方便網友閱讀。<br>
+
+                    本站所收錄作品、社區話題、書庫評論及本站所做之廣告均屬其個人行為，與本站立場無關。<br>
+
+                    Copyright © 2023 {$web['url']} Rights Reserved.   {$web['meta_title']} 版权所有。<br>
+
+                    聯係郵箱 ： #gmail.com (# 換成 @)
+                </p>
+
+                <br>
+                <div style="color: Red;">如無意中侵犯到您權益，請與我們聯係，我們將在第一時間回應並處理！謝謝！</div>
+                <!--版权-->
+            </div>
+        </footer>
+    </div>
+<script type="text/javascript" src="{$home_tplpath}js/jquery.min.js"></script>
+<script type="text/javascript" src="{$home_tplpath}js/global.js"></script>
+</body>
+</html>

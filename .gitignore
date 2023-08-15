@@ -1,0 +1,7 @@
+runtime
+runtime/*
+.env
+
+.user.ini
+.htaccess
+nginx.htaccess

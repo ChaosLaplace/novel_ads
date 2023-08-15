@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html style="font-size: {$_COOKIE['fontsize']|default='52px'};">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=no">
+    <meta name="Keywords" content="{$web['meta_keywords']}" />
+    <meta name="Description" content="{$web['meta_description']}" />
+    <link rel="stylesheet" href="{$home_tplpath}css/style.css">
+    <title>{$keyword}-搜索-{$web['meta_title']}</title>
+</head>
+<body>
+    <div id="app">
+       <div class="x-home">
+            <div class="x-page__header van-hairline--bottom">
+                <a href="javascript:history.back();"></a>
+                <span class="x-page__title">搜索</span>
+                <div class="header-menu" onclick="javascript:location.href='/';">
+                    <i class="icon-shouye-h is-active" style="font-size: 0.4rem;"></i>
+                </div>
+            </div>
+            <div class="x-page__content">
+                <div class="x-book__library">
+                    <div class="search-box">
+                        <form action="{:url('home/search/index')}" style="width: 85%;">
+                            <input type="text" placeholder="请输入搜索的书名" name="keyword" class="search-name">                    
+                            <img src="{$home_tplpath}images/search.png" class="search-img">
+                        </form>
+                    </div>
+                    <div class="x-library__books">
+                        <div class="van-list">
+                            <span>
+                                {notempty name="Request.param.keyword"}
+                                {novel id="novel" limit="20" order="update_time desc" page="1" empty="<div class='van-list'><div class='x-empty'><img src='/template/home/default_wap/images/empty.png'></div></div>"}
+                                <div class="x-book">
+                                    <div class="x-book__multi">
+                                        
+                                        <div class="x-book__coverbox">
+                                            <a href="{$novel['url']}">
+                                                <img class="x-book__cover" src="{$novel['pic']}" style="width: 1.6rem; height: 2.13333rem;">
+                                            </a>
+                                        </div>
+                                        <div class="x-book__text--multi" style="width: calc(100% - 1.6rem); height: 2.13333rem;">
+                                            <a href="{$novel['url']}">
+                                                <div class="x-book__nocover">
+                                                    <p class="x-book__info--name">{$novel['title']}</p>
+                                                    <div class="book-info-status">
+                                                        <span class="book-status">{$novel['serialize_text']}</span>
+                                                        <span class="book-wordcount">{$novel['word_million']}万字</span>
+                                                    </div>
+                                                    <p class="x-book__intro">{$novel['content']|raw|strip_tags|mb_substr=0,300}</p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/novel}
+                                {/notempty}
+                            </span>
+                        </div>
+                        {notempty name="Request.param.keyword"}
+                        <div class="pages_bottom" style="display: block;">
+                            {novel_page /}
+                        </div>
+                        {/notempty}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="{$home_tplpath}js/jquery.min.js"></script>
+<script type="text/javascript" src="{$home_tplpath}js/global.js"></script>
+</body>
+</html>

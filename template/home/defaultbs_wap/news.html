@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html style="font-size: {$_COOKIE['fontsize']|default='52px'};">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=no">
+    <meta name="Keywords" content="{$web['meta_keywords']}" />
+    <meta name="Description" content="{$web['meta_description']}" />
+    <link rel="stylesheet" href="{$home_tplpath}css/style.css">
+    <title>{$title}-{$ctitle}-{$web['meta_title']}</title>
+</head>
+<body>
+    <div id="app">
+       <div class="x-home">
+            <div class="x-page__header van-hairline--bottom">
+                <a href="javascript:history.back();"></a>
+                <span class="x-page__title">{$title}</span>
+                <div class="header-menu" onclick="javascript:location.href='/';">
+                    <i class="icon-shouye-h is-active" style="font-size: 0.4rem;"></i>
+                </div>
+            </div>
+            <div class="x-page__content">
+                <div class="x-book__detail">
+                    <h3 class="x-news__title">{$title}</h3>
+                    <div class="x-news__content hr-bottom">
+                        <p class="x-news__pic"><img src='{$pic}'></p>
+                        {$content|raw}
+                    </div>
+                    <div class="x-city__part x-detail__part hr-bottom">
+                        <div class="x-part__content">
+                            {comment size="12" /}
+                        </div>
+                    </div>
+                    <div class="x-city__part x-detail__part hr-bottom">
+                        <div class="x-part__title">推荐小说</div>
+                        <div class="x-part__content">
+                            <div class="x-detail__part--book">
+                                {novel id="novel" limit="3" order="hits desc"}
+                                <div class="x-book" style="width: 2rem;">
+                                    <a href="{$novel['url']}" title="{$novel['title']}">
+                                        <div class="x-book__coverbox">
+                                            <img lazy="loaded" class="x-book__cover" src="{$novel['pic']}" style="width: 2rem; height: 2.66667rem;">
+                                        </div>
+                                        <div class="x-book__text--normal">{$novel['title']}</div>
+                                    </a>
+                                </div>
+                                {/novel}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="{$home_tplpath}js/jquery.min.js"></script>
+<script type="text/javascript" src="{$home_tplpath}js/global.js"></script>
+</body>
+</html>

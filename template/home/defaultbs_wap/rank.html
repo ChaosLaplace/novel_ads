@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html style="font-size: {$_COOKIE['fontsize']|default='52px'};">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=no">
+    <meta name="Keywords" content="{$web['meta_keywords']}" />
+    <meta name="Description" content="{$web['meta_description']}" />
+    <link rel="stylesheet" href="{$home_tplpath}css/style.css">
+    <title>排行榜-{$web['meta_title']}</title>
+</head>
+<body>
+    <div id="app">
+       <div class="x-home">
+            <div class="x-page__header van-hairline--bottom">
+                <a href="javascript:history.back();"></a>
+                <span class="x-page__title">排行榜</span>
+                <div class="header-menu" onclick="javascript:location.href='/';">
+                    <i class="icon-shouye-h is-active" style="font-size: 0.4rem;"></i>
+                </div>
+            </div>
+            <div class="x-page__content">
+                <div class="x-rank">
+                    <div class="x-rank__menu">
+                        <a href="{:url('home/other/index',['tpl'=>'rank','order'=>'hits'])}"><p class="x-rank__menu--item {if $Request.param.order=="hits" or (!$Request.param.order and !$Request.param.newbook and !$Request.param.over)}is-active{/if}">点击总榜</p></a>
+                        <a href="{:url('home/other/index',['tpl'=>'rank','order'=>'hits_month'])}"><p class="x-rank__menu--item {eq name="Request.param.order" value="hits_month"}is-active{/eq}">点击月榜</p></a>
+                        <a href="{:url('home/other/index',['tpl'=>'rank','order'=>'hits_week'])}"><p class="x-rank__menu--item {eq name="Request.param.order" value="hits_week"}is-active{/eq}">点击周榜</p></a>
+                        <a href="{:url('home/other/index',['tpl'=>'rank','order'=>'hits_day'])}"><p class="x-rank__menu--item {eq name="Request.param.order" value="hits_day"}is-active{/eq}">点击日榜</p></a>
+                        <a href="{:url('home/other/index',['tpl'=>'rank','newbook'=>'1'])}"><p class="x-rank__menu--item {eq name="Request.param.newbook" value="1"}is-active{/eq}">新书榜</p></a>
+                        <a href="{:url('home/other/index',['tpl'=>'rank','over'=>'1'])}"><p class="x-rank__menu--item {eq name="Request.param.over" value="1"}is-active{/eq}">完结榜</p></a>
+                    </div>
+                    <div class="x-rank__list" style="height: calc(736px - 1.2rem);">
+                        {assign name="order" value="$Request.param.order|default='hits'" /}
+                        {novel id="novel" limit="30" over="input('over')" newbook="input('newbook')" order="$order desc"}
+                        <div class="x-book x-rank__book van-hairline--bottom">
+                            <a href="{$novel['url']}">
+                            <div class="x-book__multi">
+                                <div class="x-book__coverbox">
+                                    <img class="x-book__cover" src="{$novel['pic']}" style="width: 1.3rem; height: 1.73333rem;">      
+                                    <div class="x-book__coverindex">
+                                        <span>{$i}</span>
+                                    </div>
+                                </div>
+                                <div class="x-book__text--multi" style="width: calc(100% - 1.3rem); height: 1.73333rem;">
+                                    <div class="x-rank__book--info">
+                                        <p class="x-info__name">{$novel['title']}</p>
+                                        <p class="x-info__author">
+                                            {$novel['ctitle']}
+                                            <span>{$novel['author']}</span>
+                                        </p>
+                                        <p class="x-info__intro">
+                                            {$novel['content']|raw|strip_tags|mb_substr=0,300}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            </a>
+                        </div>
+                        {/novel}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="{$home_tplpath}js/jquery.min.js"></script>
+<script type="text/javascript" src="{$home_tplpath}js/global.js"></script>
+</body>
+</html>
