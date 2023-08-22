@@ -11,29 +11,40 @@
     </head>
 
 	<body>
-		{include file="template/home/default_web/header.html" /}<!--搜索导航部分-->
-		<div class="body-bg"><!--LOGO部分-->
-		    <div class="wrap"><!--LOGO部分-->
+		{include file="template/home/default_web/header.html" /}
+		<!--搜索导航部分-->
+		<div class="body-bg">
+			<!--LOGO部分-->
+		    <div class="wrap">
+				<!--LOGO部分-->
 		        <!-- start main -->
 		        <div class="containerbox">
-		            <div class="block10"></div><!--首页下方宽度-->
+		            <div class="block10"></div>
+					<!--首页下方宽度-->
 		            <!--block1 start-->
-		            <div class="wrap1200"><!--中部海报整行宽度-->
-			            <div class="boxcont fl"><!--全部分类-->
+		            <div class="wrap1200">
+						<!--中部海报整行宽度-->
+			            <div class="boxcont fl">
+							<!--全部分类-->
 			            	<ul class="boxlist">
 			            		{nav id="vo" type="0"}
 			            		<li>
-			            			<a class="title" href="{$vo['url']}" target="_blank"><em>{$vo['title']}</em></a><!--男生/女生带链接-->
-			            			<p class="clearfixer"><!--男生子分类-->
+			            			<a class="title" href="{$vo['url']}" target="_blank"><em>{$vo['title']}</em></a>
+									<!--男生/女生带链接-->
+			            			<p class="clearfixer">
+										<!--男生子分类-->
 			            				{nav id="v" cid="$vo['id']"}
-			                            <a class="gray" href="{$v['url']}" target="_blank">{$v['title']}</a><!--男生/女生全部子分类-->
+			                            <a class="gray" href="{$v['url']}" target="_blank">{$v['title']}</a>
+										<!--男生/女生全部子分类-->
 			            				{/nav}
 		                            </p>
 			            		</li>
 			            		{/nav}
 			            	</ul>
-			            </div><!--全部分类-->
-			            <div class="w950 fr"><!--海报部分-->
+			            </div>
+						<!--全部分类-->
+			            <div class="w950 fr">
+							<!--海报部分-->
 			            	<div class="mod-banner">
 			            		<div class="banner-slide">
 			            			<div class="slideBox">
@@ -52,9 +63,14 @@
 			            		</div>
 			            	</div>
 			            </div>
-		            </div><!--海报部分-->
-		            <div class="block10"></div><!--分割-->
-		            <div class="wrap1200"><!--好书推荐-->
+		            </div>
+					<!--海报部分-->
+					
+		            <div class="block10"></div>
+					<!--分割-->
+
+					<!--好书推荐-->
+		            <!-- <div class="wrap1200">
 		            	<div class="goodbookbox">
 		            		<span class="titmenu">好书推荐</span>
 		            		<div class="goodbook-tabcont">
@@ -86,12 +102,27 @@
 		            			</div>
 		            		</div>
 		            	</div>
-		            </div><!--好书推荐-->
-		            <div class="block10"></div><!--分割-->
-		            <div class="wrap1200 wrap-book-n"><!--新书推荐-->
+		            </div> -->
+					<!--好书推荐-->
+
+					<!--广告位-->
+		            <div class="wrap1200 page-ad">
+		            	<div class="slideBox">
+		            		<a href="https://www1.gamepark.com.tw/30hI8?uid1=facecbook&uid2=google" target="_blank" class="slider-film">
+		            			<img class="lazyimg" data-original="{$home_tplpath}images/1120x100.png" src="">
+		            		</a>
+		            	</div>
+		            </div>
+					<!--广告位-->
+
+		            <div class="block10"></div>
+					<!--分割-->
+
+					<!--新书推荐-->
+		            <div class="wrap1200 wrap-book-n">
 		            	<div class="w950 fl new-book-w">
 		            		<div class="titmenu">新书推荐</div>
-		            		<div class="new-book-w-l">
+		            		<!-- <div class="new-book-w-l">
 		            			{novel id="novel" limit="2" pos="1" newbook="1"}
 		            			<dl class="book-block">
 		            				<dt>
@@ -110,7 +141,8 @@
 		            				</dd>
 		            			</dl>
 		            			{/novel}
-		            		</div><!--新书推荐-->
+		            		</div> -->
+							<!--新书推荐-->
 		            		<div class="content-3">
 		            			<ul class="clearfix">
 		            				{novel id="novel" limit="4" newbook="1"}
@@ -130,7 +162,8 @@
 		            			</ul>
 		            		</div>
 		            	</div>
-		            	<div class="rank-list fr"><!--新书排行榜-->
+		            	<div class="rank-list fr">
+							<!--新书排行榜-->
 		            		<span class="titmenu">新书排行榜</span>
 		            		<ul class="rank-1">
 		            			{novel id="novel" limit="10" newbook="1" order="hits desc"}
@@ -163,17 +196,27 @@
 		            		</ul>
 		            		<a href="{:url('home/other/index',['tpl'=>'rank_hits','newbook'=>1])}" target="_blank" class="more">查看更多&gt;&gt;</a>
 		            	</div>
-		            </div><!--新书排行榜-->
-		            <div class="block10"></div><!--页面分割-->
-		            <div class="wrap1200 page-ad"><!--广告位-->
+		            </div>
+					<!--新书排行榜-->
+
+		            <div class="block10"></div>
+					<!--页面分割-->
+
+					<!--广告位-->
+		            <div class="wrap1200 page-ad">
 		            	<div class="slideBox">
-		            		<a href="#" target="_blank" class="slider-film">
+		            		<a href="https://www1.gamepark.com.tw/30hI8?uid1=facecbook&uid2=google" target="_blank" class="slider-film">
 		            			<img class="lazyimg" data-original="{$home_tplpath}images/1120x100.png" src="">
 		            		</a>
 		            	</div>
-		            </div><!--广告位-->
-		            <div class="block10"></div><!--分割页-->
-		            <div class="rank-box"><!--点击排行榜-->
+		            </div>
+					<!--广告位-->					
+
+		            <div class="block10"></div>
+					<!--分割页-->
+
+					<!--点击排行榜-->
+		            <div class="rank-box">
 		            	<div class="rank-list">
 		            		<span class="titmenu">日排行榜</span>
 		            		<ul class="rank-1">
@@ -282,9 +325,27 @@
 		            		</ul>
 		            		<a href="{:url('home/other/index',['tpl'=>'rank_hits','over'=>1])}" target="_blank" class="more">查看更多&gt;&gt;</a>
 		            	</div>
-		            </div><!--点击排行榜-->
-		            <div class="block10"></div><!--页面分割-->
-		            <div class="wrap1200 botnews"><!--最近更新-->
+		            </div>
+					<!--点击排行榜-->
+
+		            <div class="block10"></div>
+					<!--页面分割-->
+
+					<!--广告位-->
+		            <div class="wrap1200 page-ad">
+		            	<div class="slideBox">
+		            		<a href="https://www1.gamepark.com.tw/30hI8?uid1=facecbook&uid2=google" target="_blank" class="slider-film">
+		            			<img class="lazyimg" data-original="{$home_tplpath}images/1120x100.png" src="">
+		            		</a>
+		            	</div>
+		            </div>
+					<!--广告位-->
+
+					<div class="block10"></div>
+					<!--页面分割-->
+
+					<!--最近更新-->
+		            <div class="wrap1200 botnews">
 		            	<div class="mod-chapter-update">
 		            		<div class="hd mod-title">
 		            			<div class="title-bd">
@@ -341,9 +402,14 @@
 		            </div>
 		        </div>
 		    </div>
-		</div><!--最近更新-->
-		<div class="block20"></div><!--页面分割-->
-		{include file="template/home/default_web/footer.html" /}<!--底部页尾-->
+		</div>
+		<!--最近更新-->
+
+		<div class="block20"></div>
+		<!--页面分割-->
+
+		{include file="template/home/default_web/footer.html" /}
+		<!--底部页尾-->
 	</body>
 	<script type="text/javascript" src="{$home_tplpath}js/jquery.min.js"></script>
 	<script type="text/javascript" src="{$home_tplpath}js/jquery.lazyload.min.js"></script>

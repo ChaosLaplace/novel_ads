@@ -33,31 +33,31 @@ class Collect extends Validate{
 
     protected function checkRuleJson($value,$rule,$data=[])
     {
-        $field=model('Collect')->field();
-        if(!is_array($value)){
-            $value=json_decode($value,true);
-        }
-        foreach ($value as $k => $v) {
-            if(empty($v['rule']) && $v['field']!='tag'){
-                switch ($v['field']) {
-                    case 'category':
-                        if($data['category_way']==0){
-                            return $field['field'][$data['type']][$v['field']].'规则不能为空！';
-                        }
-                        break;
-                    default:
-                        return $field['field'][$data['type']][$v['field']].'规则不能为空！';
-                        break;
-                }
+        // $field=model('Collect')->field();
+        // if(!is_array($value)){
+        //     $value=json_decode($value,true);
+        // }
+        // foreach ($value as $k => $v) {
+        //     if(empty($v['rule']) && $v['field']!='tag'){
+        //         switch ($v['field']) {
+        //             case 'category':
+        //                 if($data['category_way']==0){
+        //                     return $field['field'][$data['type']][$v['field']].'规则不能为空！';
+        //                 }
+        //                 break;
+        //             default:
+        //                 return $field['field'][$data['type']][$v['field']].'规则不能为空！';
+        //                 break;
+        //         }
                 
-            }
-            if(empty($v['serial']) && $data['type']=='novel' && $v['field']=='serialize'){
-                return '连载规则连载字符不能为空！';
-            }
-            if(empty($v['over']) && $data['type']=='novel'  && $v['field']=='serialize'){
-                return '连载规则完结字符不能为空！';
-            }
-        }
+        //     }
+        //     if(empty($v['serial']) && $data['type']=='novel' && $v['field']=='serialize'){
+        //         return '连载规则连载字符不能为空！';
+        //     }
+        //     if(empty($v['over']) && $data['type']=='novel'  && $v['field']=='serialize'){
+        //         return '连载规则完结字符不能为空！';
+        //     }
+        // }
         return true;
     }
 }

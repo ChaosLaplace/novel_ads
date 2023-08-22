@@ -56,18 +56,19 @@ class Collect extends Model{
         return $result;
     }
 
-    public function sever_data($info,$field){
+    public function sever_data($info, $field){
         $chapter=[];
         $chapter_field=[];
         $data_link=[];
-        if(is_array($field)){
+        if ( is_array($field) ) {
             $field_data['reurl']=$field["reurl"];
             $field_data['update_time']=time();
-            if(isset($field["id"]) && isset($info['update'])){
+            if ( isset($field["id"]) && isset($info['update']) ) {
                 Db::name($info['type'])->where(['id'=>$field["id"]])->update($field_data);
                 rm_cache($field['id'],$info['type']);
                 $data_id=$field["id"];
-            }else{
+            }
+            else {
                 $field_data['category']=$field['category'];
                 $field_data['title']=$field['title'];
                 $field_data['pic']=$field['pic'];
@@ -83,7 +84,8 @@ class Collect extends Model{
                 rm_cache(NUll,$info['type']);
                 $data_link[]=url('home/'.$info['type'].'/index',['id'=>$data_id],true,true);
             }
-            if($info['type']=='novel'){
+
+            if ( $info['type'] == 'novel' ) {
                 foreach ($field["chapter"] as $value) {
                     $chapter_data=[];
                     $keys=uniqidReal();
@@ -121,7 +123,8 @@ class Collect extends Model{
                         $map = ['status'=>1,'group'=>'storage'];
                         return Db::name('Addons')->where($map)->value('name');
                     });
-                    if($addons_name){
+
+                    if ($addons_name) {
                         $chapter=DB::name($info['type'].'_chapter')->where(['novel_id'=>$field["id"]])->value('chapter');
                         $chapter=model('common/api')->decompress_chapter($chapter);
                         $chapter=json_decode($chapter,true);
@@ -133,7 +136,8 @@ class Collect extends Model{
                                 $addon->unlink($path);
                             }
                         }
-                    }else{
+                    }
+                    else {
                         del_dir_file(Env::get('runtime_path').'txt'.DIRECTORY_SEPARATOR.$field["id"],true);
                     }
                     // 更新数据
@@ -141,14 +145,16 @@ class Collect extends Model{
                     $chapter_id=Db::name($info['type'].'_chapter')->where(['novel_id'=>$field["id"]])->value('id');
                     Db::name($info['type'].'_chapter')->where(['id'=>$chapter_id])->update($chapter_field);
 
-                }else{
+                }
+                else{
                     $chapter_id=Db::name($info['type'].'_chapter')->insertGetId($chapter_field);
                 }
+
                 foreach ($chapter as $key => $value) {
-                    $data_link[]=url('home/chapter/index',['id'=>$chapter_id,'key'=>$key],true,true);
+                    $data_link[]=url('home/chapter/index', ['id'=>$chapter_id,'key'=>$key], true, true);
                 }
             }
-            model('common/DataOperation')->after('add',$info['type'],$data_link);
+            model('common/DataOperation')->after('add', $info['type'], $data_link);
             return $field;
         }
     }

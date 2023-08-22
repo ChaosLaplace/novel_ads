@@ -197,14 +197,13 @@ class Gather
             return ['code' => true, 'title' => $data['title'], 'msg' => '已存在', 'reurl' => $url, 'status' => 'ok'];
         }
 
-        // $html = self::get_html($url, $info['charset'], $info['url_complete']);
-        $html = self::get_html($url);
+        $html = self::get_html($url, $info['charset'], $info['url_complete']);
         if ( !$html ) {
             if ($test['state']===false){
                 return ['error' => true, 'msg' => '无法获取页面', 'url' => $url];
             }
             else{
-                self::echo_msg('无法获取页面:url['.$url.']');
+                self::echo_msg('无法获取页面:url[' . $url . ']');
                 return false;
             }
         }
@@ -217,7 +216,7 @@ class Gather
                             if($info['category_way']===1){
                                 $field[$rule_value['field']]=$info['category_fixed'];
                             }else{
-                                $category_mb=self::field_rule($rule_value,$html);
+                                $category_mb=self::field_rule($rule_value, $html);
                                 if(empty($category_mb)){
                                     $return=['code'=>true,'title'=>'','msg'=>'未获取到栏目','reurl'=>$url,'status'=>'error'];
                                     return $return;
@@ -483,6 +482,165 @@ class Gather
         echo '<script type="text/javascript">document.getElementsByTagName("body")[0].scrollTop=document.getElementsByTagName("body")[0].scrollHeight;</script>';
         ob_flush();
         flush();
+    }
+    // 获取数据
+    static public function get_html_new($url, $encode, $url_complete){
+        $proxy = '';
+        $map = ['status'=>1,'group'=>'proxy'];
+        $addons_name = Db::name('Addons')->where($map)->value('name');
+        if($addons_name){
+            $addons_class = get_addon_class($addons_name);
+            if(class_exists($addons_class)){
+                $addon = new $addons_class();
+                $proxy = $addon->$addons_name();
+            }
+        }
+        $html=Http::doGet($url,60,'',$proxy);
+        if($html==false){
+            return $html;
+        }
+        $collect_sleep=Config::get('web.collect_sleep');
+        if(!empty($collect_sleep)){
+            sleep($collect_sleep);
+        }
+        if($url_complete){
+            $html=self::url_complete($html,$url);
+        }
+        return self::auto_convert2utf8($html,$encode);
+    }
+    // 取得全部主題小說
+    static public function getTopics1($info, $test= ['state' => false], $field=[], $page='default') {
+        $url = 'https://tw.uukanshu.com/list/';
+        $topics = ['xuanhuan', 'yanqing', 'xianxia', 'lishi', 'wangyou', 'lingyi', 'tongren', 'erciyuan'];
+
+        foreach ($topics as $v) {
+            $url = "$url$v-1.html";
+            $html = self::get_html_new($url, $info['charset'], $info['url_complete']);
+            if ( !$html ) {
+                if ($test['state']===false){
+                    return ['error' => true, 'msg' => '无法获取页面', 'url' => $url];
+                }
+                else{
+                    self::echo_msg('无法获取页面:url[' . $url . ']');
+                    return false;
+                }
+            }
+            return ['code' => true, 'msg' => '已存在', 'html' => $html, 'status' => 'ok'];
+        }
+        
+
+        foreach ($info['rule'] as $rule_key => $rule_value){
+            if($rule_value['source']===$page){
+                if($test['state']===false){
+                    switch ($rule_value['field']) {
+                        case 'category':
+                            if($info['category_way']===1){
+                                $field[$rule_value['field']]=$info['category_fixed'];
+                            }else{
+                                $category_mb=self::field_rule($rule_value, $html);
+                                if(empty($category_mb)){
+                                    $return=['code'=>true,'title'=>'','msg'=>'未获取到栏目','reurl'=>$url,'status'=>'error'];
+                                    return $return;
+                                }
+                                if(empty($info['category_equivalents'])){
+                                    $return=['code'=>true,'title'=>'','msg'=>'栏目规则-栏目转换不能为空','reurl'=>$url,'status'=>'error'];
+                                    return $return;
+                                }
+                                $category=self::category_equivalents($info['category_equivalents'],$category_mb);
+                                $field[$rule_value['field']]=$category;
+                                if(empty($category)){
+                                    $return=['code'=>true,'title'=>'','msg'=>'获取对应栏目出错--'.$category_mb,'reurl'=>$url,'status'=>'error'];
+                                    return $return;
+                                }
+                            }
+                            $field['reurl']=$url;
+                            break;
+                        case 'pic':
+                            if ( empty($field['id']) ) {
+                                $pic = self::field_rule($rule_value, $html);
+                                // $field['pic_before'] = $pic;
+
+                                if ( $info['pic_local'] == 1 ) {
+                                    $pic = self::down_img($pic, $info['type']);
+                                }
+                                $field[$rule_value['field']] = $pic;
+
+                                // $field['pic_after'] = $pic;
+                            }
+                            break;
+                        case 'serialize':
+                            $serialize=self::field_rule($rule_value,$html);
+                            if($rule_value['serial']==$serialize){
+                                $field[$rule_value['field']]=0;
+                            }elseif($rule_value['over']==$serialize){
+                                $field[$rule_value['field']]=1;
+                            }else{
+                                $field[$rule_value['field']]=0;
+                            }
+                            break;
+                        default:
+                            $field[$rule_value['field']]=self::field_rule($rule_value,$html);
+                            $data=self::has_title($info,$field);
+                            if($data){
+                                if(empty($info['update'])){
+                                    $return=['code'=>true,'title'=>$data['title'],'msg'=>'已存在','reurl'=>$url,'status'=>'ok'];
+                                    return $return;
+                                }else{
+                                   $field['id']=$data['id']; 
+                                }
+                            }
+                            break;
+                    }
+                }else{
+                    if($rule_value['field']===$test['field']){
+                        self::echo_msg('获取页面:url['.$url.']');
+                        $test_value=self::field_rule($rule_value,$html);
+                        if(empty($test_value)){
+                            self::echo_msg('未获取到内容，请检测规则！');
+                            self::echo_msg('<pre class="layui-code" lay-title="页面代码" lay-height="500px">'.htmlentities($html).'</pre><script>layui.use("code", function(){layui.code();});</script>');
+                        }else{
+                            self::echo_msg('获取结果:['.$test_value.']');
+                        }
+                        return false;
+                    }
+                }
+            }
+        }
+        $relation=json_decode($info['relation_url'],true);
+        if($relation){
+            foreach ($relation as $key => $value) {
+                if($value['page']===$page){
+                    if(!empty($value['section'])){
+                        $html=self::get_section_data($html,$value['section']);
+                    }
+                    $relation_list=self::field_rule(['rule'=>$value['url_rule'],'merge'=>$value['url_merge'],'chapter'=>$value['chapter']],$html,true);
+                    if(empty($relation_list)){
+                        if($test['state']===false){
+                            return ['code'=>true,'title'=>$field['title'],'msg'=>'获取关联页面出错','reurl'=>$url,'status'=>'error'];
+                        }else{
+                            self::echo_msg('获取关联页面出错--'.$value['title'].':url['.$url.']');
+                            self::echo_msg('<pre class="layui-code" lay-title="页面代码" lay-height="500px">'.htmlentities($html).'</pre><script>layui.use("code", function(){layui.code();});</script>');
+                            return false;
+                        }
+                    }else{
+                        if($value['chapter']==0){
+                            $relation_list=array_unique($relation_list);
+                            foreach ($relation_list as $list_key => $list_url){
+                                $field=self::field_content($info,$list_url,$test,$field,strval($key));
+                            }
+                        }else{
+                            if($test['state']===false){
+                                $field['chapter_url']=$url;
+                                $field['chapter']=$relation_list;
+                            }else{
+                                self::field_content($info,$relation_list[0]['url'],$test,$field,strval($key));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $field;
     }
 }
 ?>

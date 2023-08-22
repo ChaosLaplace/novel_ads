@@ -10,20 +10,27 @@
 		{include file="template/user/web/header.html" /}
 		<div class="container wrap1200">
 			{include file="template/user/web/left.html" /}
-			<!--right mod -->		
+			<!--right mod -->
 			<div class="i-right">
 				<!--bot mod -->		
 				<div class="i-bot">
 					<!--left mod -->		
 					<div class="l-botMod">
 						<div class="myMod" id="myMod">
-							<div class="i-title">
+							<!-- <div class="i-title">
 								我的书架
 								<a href="{:url('user/bookshelf/index')}" class="clickMore" target="_blank">查看更多&gt;&gt;</a>
-							</div>
-							{empty name="bookshelf_list"}
+							</div> -->
+							<!-- {empty name="bookshelf_list"}
 							<p class="bookNone">您还没有在读的书，快去<a href="/" target="_blank" data-namecard="false">首页</a>看看吧</p>
-							{/empty}
+							{/empty} -->
+
+							<!--广告位-->
+							<a href="https://www1.gamepark.com.tw/30hI8?uid1=facecbook&uid2=google" target="_blank" class="slider-film">
+								<img class="lazyimg" style="width: 100%;" src="http://novelads.dev.com/template/home/default_web/images/1120x100.png">
+							</a>
+							<!--广告位-->
+
 							<ul class="bookUl">
 								{volist name="bookshelf_list" id="novel"}
 								<li>
